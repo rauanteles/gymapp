@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
   Widget build(BuildContext context) {
+    // final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Column(
         children: [
           const SizedBox(height: 60),
           cabecalhoEstatico(),
           const SizedBox(height: 40),
-          formLogin(context),
+          SizedBox(
+            width: 330,
+            child: formLogin(context),
+          ),
         ],
       ),
     );
@@ -26,7 +35,7 @@ class LoginPage extends StatelessWidget {
           child: Center(
             child: Image.asset(
               'assets/profile_picture.png',
-              scale: 12,
+              scale: 8,
               fit: BoxFit.cover,
             ),
           ),
@@ -38,55 +47,66 @@ class LoginPage extends StatelessWidget {
   formLogin(context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
+        Text(
+          'Email',
+          textAlign: TextAlign.left,
+          style: TextStyle(color: colorScheme.outlineVariant, fontSize: 15),
+        ),
+        const SizedBox(height: 5),
+        Material(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          elevation: 10,
+          shadowColor: colorScheme.primary,
           child: TextFormField(
-            style: TextStyle(color: colorScheme.onPrimary, fontSize: 20),
             decoration: InputDecoration(
+              isDense: true,
               filled: true,
-              fillColor: colorScheme.primary,
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: colorScheme.onPrimary,
-                ),
+              fillColor: colorScheme.onPrimary,
+              enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(style: BorderStyle.none),
               ),
               focusedBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(
-                  color: colorScheme.onPrimary,
+                  color: colorScheme.primary,
                 ),
               ),
               prefixIcon: const Icon(Icons.people),
-              prefixIconColor: colorScheme.onPrimary,
-              labelText: 'Email',
-              labelStyle: TextStyle(
-                color: colorScheme.onPrimary,
-              ),
+              prefixIconColor: colorScheme.primary,
             ),
           ),
         ),
-        const SizedBox(
-          height: 10,
+        const SizedBox(height: 15),
+        Text(
+          'Senha',
+          textAlign: TextAlign.left,
+          style: TextStyle(color: colorScheme.outlineVariant, fontSize: 15),
         ),
-        TextFormField(
-          style: TextStyle(color: colorScheme.onPrimary, fontSize: 20),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: colorScheme.primary,
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: colorScheme.onPrimary,
+        const SizedBox(height: 5),
+        Material(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          elevation: 10,
+          shadowColor: colorScheme.primary,
+          child: TextFormField(
+            decoration: InputDecoration(
+              isDense: true,
+              filled: true,
+              fillColor: colorScheme.onPrimary,
+              enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(style: BorderStyle.none),
               ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: colorScheme.onPrimary,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(
+                  color: colorScheme.primary,
+                ),
               ),
-            ),
-            prefixIcon: const Icon(Icons.lock),
-            prefixIconColor: colorScheme.onPrimary,
-            labelText: 'Senha',
-            labelStyle: TextStyle(
-              color: colorScheme.onPrimary,
+              prefixIcon: const Icon(Icons.lock),
+              prefixIconColor: colorScheme.primary,
             ),
           ),
         ),
