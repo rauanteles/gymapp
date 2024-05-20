@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,21 +13,33 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     // final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
-      body: Column(
-        children: [
-          const SizedBox(height: 60),
-          cabecalhoEstatico(),
-          const SizedBox(height: 40),
-          SizedBox(
-            width: 330,
-            child: formLogin(context),
-          ),
-        ],
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: telaLogin(context),
       ),
     );
   }
 
+//------------------------------------------------------------------------------
+  telaLogin(context) {
+    return Column(
+      children: [
+        const SizedBox(height: 60),
+        SizedBox(child: cabecalhoEstatico()),
+        const SizedBox(height: 40),
+        SizedBox(width: 330, child: formLogin(context)),
+        const SizedBox(height: 60),
+        SizedBox(width: 330, child: buttonLogin(context)),
+        const SizedBox(height: 10),
+        SizedBox(child: forgotPassword()),
+        const Divider(indent: 40, endIndent: 40),
+      ],
+    );
+  }
+
+//------------------------------------------------------------------------------
   cabecalhoEstatico() {
     return Column(
       children: [
@@ -36,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Image.asset(
               'assets/profile_picture.png',
               scale: 8,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
           ),
         ),
@@ -45,25 +58,26 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   formLogin(context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    var colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Email',
           textAlign: TextAlign.left,
-          style: TextStyle(color: colorScheme.outlineVariant, fontSize: 15),
+          style: TextStyle(color: Colors.grey),
         ),
         const SizedBox(height: 5),
         Material(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           elevation: 10,
-          shadowColor: colorScheme.primary,
+          shadowColor: Colors.black,
           child: TextFormField(
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               isDense: true,
               filled: true,
-              fillColor: colorScheme.onPrimary,
+              fillColor: Colors.white,
               enabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(style: BorderStyle.none),
@@ -80,21 +94,22 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         const SizedBox(height: 15),
-        Text(
+        const Text(
           'Senha',
           textAlign: TextAlign.left,
-          style: TextStyle(color: colorScheme.outlineVariant, fontSize: 15),
+          style: TextStyle(color: Colors.grey),
         ),
         const SizedBox(height: 5),
         Material(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           elevation: 10,
-          shadowColor: colorScheme.primary,
+          shadowColor: Colors.black,
           child: TextFormField(
+            textInputAction: TextInputAction.done,
             decoration: InputDecoration(
               isDense: true,
               filled: true,
-              fillColor: colorScheme.onPrimary,
+              fillColor: Colors.white,
               enabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(style: BorderStyle.none),
@@ -112,5 +127,38 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ],
     );
+  }
+
+  buttonLogin(context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return SizedBox(
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            gradient: LinearGradient(
+                colors: [colorScheme.primaryContainer, colorScheme.primary])),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent),
+          child: Text(
+            'Login',
+            style: TextStyle(
+              color: colorScheme.onPrimary,
+              fontSize: 20,
+            ),
+          ),
+          onPressed: () {
+            Modular.to.pushNamed('/home/');
+          },
+        ),
+      ),
+    );
+  }
+
+  forgotPassword() {
+    return TextButton(
+        onPressed: () {}, child: const Text('Esqueci minha senha'));
   }
 }
