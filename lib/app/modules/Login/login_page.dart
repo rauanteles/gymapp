@@ -13,8 +13,8 @@ class _LoginPageState extends State<LoginPage> {
   final email = TextEditingController();
   final password = TextEditingController();
 
-  //A bool variable for show and hide password
   bool isVisible = false;
+  bool isDark = false;
 
 //We have to create global key for our form
   final formKey = GlobalKey<FormState>();

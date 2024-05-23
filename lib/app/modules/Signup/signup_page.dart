@@ -112,6 +112,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Preencha o campo senha";
+                        } else if (password.text != confirmPassword.text) {
+                          return "Senhas diferentes";
                         }
                         return null;
                       },
