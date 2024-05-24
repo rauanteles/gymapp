@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gym/app/Json/user.dart';
+import 'package:gym/app/SQL/sqlite.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,11 +12,29 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   //Editing Controller to control the next when we enter into it
+  final username = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
 
   bool isVisible = false;
-  bool isDark = false;
+  bool isLoginTrue = false;
+  bool isChecked = false;
+
+  final db = DatabaseHelper();
+// Função login
+  login() async {
+    var response = await db
+        .login(Users(userEmail: email.text, userPassword: password.text));
+
+    if (response == true) {
+      if (!mounted) return;
+      Modular.to.pushNamed('/home/');
+    } else {
+      setState(() {
+        isLoginTrue = true;
+      });
+    }
+  }
 
 //We have to create global key for our form
   final formKey = GlobalKey<FormState>();
@@ -53,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: colorScheme.primary.withOpacity(0.1),
                           ),
                           child: TextFormField(
+                            controller: email,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "Preencha o campo email";
@@ -66,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
+
                         //PASSWORD
                         Container(
                           margin: const EdgeInsets.all(8),
@@ -76,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: colorScheme.primary.withOpacity(0.1),
                           ),
                           child: TextFormField(
+                            controller: password,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "Preencha o campo senha";
@@ -100,7 +123,22 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 15),
+
+                        //CHECKBOX
+                        ListTile(
+                          horizontalTitleGap: 2,
+                          title: const Text('Continue conectado'),
+                          leading: Checkbox(
+                            activeColor: colorScheme.primary,
+                            value: isChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                isChecked = !isChecked;
+                              });
+                            },
+                          ),
+                        ),
+
                         //Login Button
                         Container(
                           height: 55,
@@ -113,6 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
                                 //Login method will be here
+                                login();
                               }
                             },
                             child: Text(
@@ -134,6 +173,14 @@ class _LoginPageState extends State<LoginPage> {
                                 child: const Text('CADASTRE-SE'))
                           ],
                         ),
+
+                        //sera disparado caso esta incorreto
+                        isLoginTrue
+                            ? Text(
+                                'Email ou senha está incorreto',
+                                style: TextStyle(color: colorScheme.error),
+                              )
+                            : const SizedBox()
                       ],
                     ),
                   ),
@@ -143,57 +190,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-    );
-  }
-
-//------------------------------------------------------------------------------
-
-  buttonLogin(context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return SizedBox(
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            gradient: LinearGradient(
-                colors: [colorScheme.primaryContainer, colorScheme.primary])),
-        child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Colors.transparent),
-            foregroundColor:
-                MaterialStateProperty.all<Color>(Colors.transparent),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  side: BorderSide(color: Colors.transparent)),
-            ),
-          ),
-          child: const Text(
-            'Login',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-            ),
-          ),
-          onPressed: () {
-            Modular.to.pushNamed('/home/');
-          },
-        ),
-      ),
-    );
-  }
-
-  dontHaveAccount() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text('Não tem conta ainda?'),
-        TextButton(
-          child: const Text('Cadastre-se'),
-          onPressed: () {},
-        ),
-      ],
     );
   }
 }

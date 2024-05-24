@@ -1,12 +1,12 @@
 class Users {
   final int? userId;
-  final String userName;
+  final String? userName;
   final String userEmail;
   final String userPassword;
 
   Users({
     this.userId,
-    required this.userName,
+    this.userName,
     required this.userEmail,
     required this.userPassword,
   });

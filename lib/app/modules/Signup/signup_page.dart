@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:gym/app/Json/user.dart';
+import 'package:gym/app/SQL/sqlite.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -9,6 +11,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final username = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
   final confirmPassword = TextEditingController();
@@ -36,6 +39,30 @@ class _SignUpPageState extends State<SignUpPage> {
                           TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
                     ),
                   ),
+                  //USER
+                  Container(
+                    margin: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: colorScheme.primary.withOpacity(0.1),
+                    ),
+                    child: TextFormField(
+                      controller: username,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Preencha o campo Nome de usuário";
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.person),
+                        border: InputBorder.none,
+                        hintText: 'Nome de Usuário',
+                      ),
+                    ),
+                  ),
 
                   //EMAIL
                   Container(
@@ -55,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        icon: Icon(Icons.person),
+                        icon: Icon(Icons.email),
                         border: InputBorder.none,
                         hintText: 'Email',
                       ),
@@ -148,6 +175,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           //Login method will be here
+                          final db = DatabaseHelper();
+                          db
+                              .signup(Users(
+                                  userEmail: email.text,
+                                  userPassword: password.text))
+                              .whenComplete(() {
+                            Modular.to.pop();
+                          });
                         }
                       },
                       child: Text(

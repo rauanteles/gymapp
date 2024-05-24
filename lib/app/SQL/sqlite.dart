@@ -5,11 +5,12 @@ import 'package:sqflite/sqflite.dart';
 class DatabaseHelper {
   final databaseName = "gym.db";
   String users =
-      "CREATE TABLE users (userId INTEGER PRIMARY KEY AUTOINCREMENT, userName TEXT NOT NULL, userEmail UNIQUE NOT NULL, userPassword TEXT NOT NULL)";
+      "CREATE TABLE users (userId INTEGER PRIMARY KEY AUTOINCREMENT, userName TEXT UNIQUE, userEmail TEXT UNIQUE NOT NULL, userPassword TEXT NOT NULL)";
 
   Future<Database> initDB() async {
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, databaseName);
+
     return openDatabase(path, version: 1, onCreate: (db, version) async {
       await db.execute(users);
     });
@@ -20,7 +21,8 @@ class DatabaseHelper {
     final Database db = await initDB();
 
     var result = await db.rawQuery(
-        "select * from users where '${user.userEmail}' AND '${user.userPassword}'");
+        "select * from users where userEmail = '${user.userEmail}' AND userPassword = '${user.userPassword}'");
+
     if (result.isNotEmpty) {
       return true;
     } else {
