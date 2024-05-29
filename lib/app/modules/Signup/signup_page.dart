@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:gym/app/Json/user.dart';
-import 'package:gym/app/SQL/sqlite.dart';
+import 'package:gym/app/modules/Signup/signup_page1.dart';
+import 'package:gym/app/modules/Signup/signup_page6.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -11,204 +10,58 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final username = TextEditingController();
-  final email = TextEditingController();
-  final password = TextEditingController();
-  final confirmPassword = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _progress = 1 / 6;
+  }
 
-  final formKey = GlobalKey<FormState>();
+  //PROGRESS BAR
+  double _progress = 0;
+  int currentPage = 0;
+  final PageController _progressController = PageController(initialPage: 0);
 
+  //esconder senha
   bool isVisible = false;
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const ListTile(
-                    title: Text(
-                      'Cadastre uma nova conta',
-                      style:
-                          TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  //USER
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: colorScheme.primary.withOpacity(0.1),
-                    ),
-                    child: TextFormField(
-                      controller: username,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Preencha o campo Nome de usuário";
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.person),
-                        border: InputBorder.none,
-                        hintText: 'Nome de Usuário',
-                      ),
-                    ),
-                  ),
-
-                  //EMAIL
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: colorScheme.primary.withOpacity(0.1),
-                    ),
-                    child: TextFormField(
-                      controller: email,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Preencha o campo email";
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        icon: Icon(Icons.email),
-                        border: InputBorder.none,
-                        hintText: 'Email',
-                      ),
-                    ),
-                  ),
-
-                  //SENHA
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: colorScheme.primary.withOpacity(0.1),
-                    ),
-                    child: TextFormField(
-                      controller: password,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Preencha o campo senha";
-                        }
-                        return null;
-                      },
-                      obscureText: !isVisible,
-                      decoration: InputDecoration(
-                        icon: const Icon(Icons.lock),
-                        border: InputBorder.none,
-                        hintText: 'Senha',
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isVisible = !isVisible;
-                            });
-                          },
-                          icon: Icon(isVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  //CONFIRMAR SENHA
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: colorScheme.primary.withOpacity(0.1),
-                    ),
-                    child: TextFormField(
-                      controller: confirmPassword,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Preencha o campo senha";
-                        } else if (password.text != confirmPassword.text) {
-                          return "Senhas diferentes";
-                        }
-                        return null;
-                      },
-                      obscureText: !isVisible,
-                      decoration: InputDecoration(
-                        icon: const Icon(Icons.lock),
-                        border: InputBorder.none,
-                        hintText: 'Confirmar Senha',
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isVisible = !isVisible;
-                            });
-                          },
-                          icon: Icon(isVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  //Login Button
-                  Container(
-                    height: 55,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    decoration: BoxDecoration(
-                      color: colorScheme.primary,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          //Login method will be here
-                          final db = DatabaseHelper();
-                          db
-                              .signup(Users(
-                                  userEmail: email.text,
-                                  userPassword: password.text))
-                              .whenComplete(() {
-                            Modular.to.pop();
-                          });
-                        }
-                      },
-                      child: Text(
-                        'CADASTRAR',
-                        style: TextStyle(color: colorScheme.onPrimary),
-                      ),
-                    ),
-                  ),
-                  //Sing up button
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Já possui conta?'),
-                      TextButton(
-                          onPressed: () {
-                            //Navigate to Sing Up
-                            Modular.to.pop();
-                          },
-                          child: const Text('ENTRE'))
-                    ],
-                  ),
-                ],
-              ),
-            ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Meus Dados'),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(5),
+          child: LinearProgressIndicator(
+            minHeight: 5.0,
+            value: _progress,
+            color: colorScheme.primary,
+            backgroundColor: Colors.grey[300],
           ),
         ),
+      ),
+      body: PageView(
+        // physics: const NeverScrollableScrollPhysics(),
+        controller: _progressController,
+        onPageChanged: (int page) {
+          setState(() {
+            currentPage = page;
+            _progress = (currentPage + 1) / 6;
+          });
+        },
+        children: const [
+          SignupPage1(),
+          //
+          Text('WIDGET 2'),
+          //
+          Text('WIDGET 3'),
+          //
+          Text('WIDGET 4'),
+          //
+          Text('WIDGET 5'),
+          //
+          SignupPage6(),
+        ],
       ),
     );
   }

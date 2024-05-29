@@ -44,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -57,9 +58,15 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
+                        //botao temporario para consultar usuarios
+                        ElevatedButton(
+                            onPressed: () {
+                              Modular.to.pushNamed('/users/');
+                            },
+                            child: Text('USERS')),
                         //Image
                         Image.asset(
-                          "assets/person.jpg",
+                          "assets/login.png",
                           width: 300,
                         ),
                         const SizedBox(height: 15),

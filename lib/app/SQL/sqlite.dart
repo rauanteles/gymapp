@@ -37,6 +37,13 @@ class DatabaseHelper {
     return db.insert('users', user.toMap());
   }
 
+  Future<List<Users>> searchUsers(String keyword) async {
+    final Database db = await initDB();
+    List<Map<String, Object?>> searchResult = await db
+        .rawQuery("select * from notes where noteTitle LIKE ?", ["%$keyword%"]);
+    return searchResult.map((e) => Users.fromMap(e)).toList();
+  }
+
   //CRUD methods
 
   //Create user

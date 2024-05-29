@@ -1,6 +1,8 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:gym/app/modules/Home/home_module.dart';
-import 'package:gym/app/modules/Login/login_page.dart';
+import 'package:gym/app/modules/Login/login_module.dart';
+import 'package:gym/app/modules/Splash/splash_page.dart';
+import 'package:gym/app/modules/Users/users_module.dart';
 import 'package:gym/app/modules/Signup/signup_module.dart';
 
 class AppModule extends Module {
@@ -8,10 +10,10 @@ class AppModule extends Module {
   void binds(Injector i) {}
   @override
   void routes(RouteManager r) {
-    r.child('/', child: ((context) => const LoginPage()));
-    r.module('/home', module: HomeModule());
+    r.child(Modular.initialRoute, child: (context) => const SplashPage());
+    r.module('/login', module: LoginModule());
+    r.module('/users', module: UserModule());
     r.module('/signup', module: SignUpModule());
-    // r.redirect('/redirect', to: '/');
-    //WildcardRoute(child: (context) => NotFoundPage());
+    r.module('/home', module: HomeModule());
   }
 }
