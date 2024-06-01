@@ -17,9 +17,7 @@ class _SignupPage1State extends State<SignupPage1> {
   int _selectedHeight = 160;
   int _goalWeightInt = 70;
   int _goalWeightDecimal = 0;
-  bool showPickerOpenWeight = false;
-  bool showPickerOpenHeight = false;
-  bool showPickerOpenGoal = false;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -33,7 +31,17 @@ class _SignupPage1State extends State<SignupPage1> {
           ),
           const Divider(),
 
-          //SEXO
+          //*SEXO
+
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: 20,
+            child: Text(
+              'Sexo',
+              textAlign: TextAlign.start,
+              style: TextStyle(color: colorScheme.primary, fontSize: 20),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
@@ -49,7 +57,7 @@ class _SignupPage1State extends State<SignupPage1> {
                     Expanded(
                       flex: 4,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 25, 0),
+                        padding: const EdgeInsets.fromLTRB(8, 0, 20, 0),
                         child: DropdownButton<String>(
                           iconEnabledColor: colorScheme.onPrimary,
                           underline: const SizedBox(),
@@ -86,8 +94,17 @@ class _SignupPage1State extends State<SignupPage1> {
               ),
             ),
           ),
-
-          //NASCIMENTO
+          const Divider(thickness: 1, indent: 15, endIndent: 15),
+          //*NASCIMENTO
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: 20,
+            child: Text(
+              'Data de nascimento',
+              textAlign: TextAlign.start,
+              style: TextStyle(color: colorScheme.primary, fontSize: 20),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
@@ -101,7 +118,7 @@ class _SignupPage1State extends State<SignupPage1> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 4,
+                      flex: 5,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
@@ -137,8 +154,17 @@ class _SignupPage1State extends State<SignupPage1> {
               ),
             ),
           ),
-
-          //PESO
+          const Divider(thickness: 1, indent: 15, endIndent: 15),
+          //*PESO
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: 20,
+            child: Text(
+              'Peso atual',
+              textAlign: TextAlign.start,
+              style: TextStyle(color: colorScheme.primary, fontSize: 20),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
@@ -160,18 +186,24 @@ class _SignupPage1State extends State<SignupPage1> {
                               _selectedWeightInt,
                               _selectedWeightDecimal,
                               40,
-                              250,
-                              showPickerOpenWeight, (
+                              250, (
                             valueInt,
                             valueDecimal,
                           ) {
                             setState(() {
-                              showPickerOpenWeight = true;
                               _selectedWeightInt = valueInt;
                               _selectedWeightDecimal = valueDecimal;
                             });
                           })),
                     ),
+                    Text(
+                      '$_selectedWeightInt.$_selectedWeightDecimal',
+                      style: TextStyle(
+                          color: colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                    const SizedBox(width: 5),
                     Text(
                       'KG',
                       style: TextStyle(
@@ -191,8 +223,17 @@ class _SignupPage1State extends State<SignupPage1> {
               ),
             ),
           ),
-
-          //ALTURA
+          const Divider(thickness: 1, indent: 15, endIndent: 15),
+          //*ALTURA
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: 20,
+            child: Text(
+              'Altura',
+              textAlign: TextAlign.start,
+              style: TextStyle(color: colorScheme.primary, fontSize: 20),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
@@ -218,6 +259,14 @@ class _SignupPage1State extends State<SignupPage1> {
                           })),
                     ),
                     Text(
+                      '$_selectedHeight',
+                      style: TextStyle(
+                          color: colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
                       'CM',
                       style: TextStyle(
                           color: colorScheme.onPrimary,
@@ -236,8 +285,17 @@ class _SignupPage1State extends State<SignupPage1> {
               ),
             ),
           ),
-
-          //META
+          const Divider(thickness: 1, indent: 15, endIndent: 15),
+          //*META
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: 20,
+            child: Text(
+              'Em que peso deseja chegar? ',
+              textAlign: TextAlign.start,
+              style: TextStyle(color: colorScheme.primary, fontSize: 20),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
@@ -260,10 +318,8 @@ class _SignupPage1State extends State<SignupPage1> {
                           _goalWeightDecimal,
                           40,
                           200,
-                          showPickerOpenGoal,
                           (valueInt, valueDecimal) {
                             setState(() {
-                              showPickerOpenGoal = true;
                               _goalWeightInt = valueInt;
                               _goalWeightDecimal = valueDecimal;
                             });
@@ -271,6 +327,14 @@ class _SignupPage1State extends State<SignupPage1> {
                         ),
                       ),
                     ),
+                    Text(
+                      '$_goalWeightInt.$_goalWeightDecimal',
+                      style: TextStyle(
+                          color: colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                    const SizedBox(width: 5),
                     Text(
                       'KG',
                       style: TextStyle(
@@ -290,6 +354,22 @@ class _SignupPage1State extends State<SignupPage1> {
               ),
             ),
           ),
+          const Expanded(child: SizedBox()),
+          Container(
+            height: 55,
+            width: MediaQuery.of(context).size.width * 0.9,
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                'PRÓXIMO',
+                style: TextStyle(color: colorScheme.onPrimary),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -302,7 +382,6 @@ class _SignupPage1State extends State<SignupPage1> {
       int selectedValueDecimal,
       int minValue,
       int maxValue,
-      bool showPickerOpen,
       Function(int, int) onSelectedItemChanged) {
     final colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
@@ -317,22 +396,20 @@ class _SignupPage1State extends State<SignupPage1> {
             (valueInt, valueDecimal) =>
                 onSelectedItemChanged(valueInt, valueDecimal));
       },
-      child: AbsorbPointer(
-        child: showPickerOpen
-            ? Text(
-                '$selectedValueInt.$selectedValueDecimal',
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              )
-            : Text(
-                label,
-                style: TextStyle(
-                  color: colorScheme.onPrimary,
-                  fontSize: 20,
-                ),
-              ),
+      child:
+          // Text(
+          //     '$selectedValueInt.$selectedValueDecimal',
+          //     style: TextStyle(
+          //         color: Theme.of(context).colorScheme.onPrimary,
+          //         fontSize: 20,
+          //         fontWeight: FontWeight.bold),
+          //   ),
+          Text(
+        label,
+        style: TextStyle(
+          color: colorScheme.onPrimary,
+          fontSize: 20,
+        ),
       ),
     );
   }
@@ -356,23 +433,20 @@ class _SignupPage1State extends State<SignupPage1> {
           maxValue,
           (value) => onSelectedItemChanged(value),
         );
-        setState(() {
-          showPickerOpenHeight = true;
-        });
       },
       child: AbsorbPointer(
-        child: showPickerOpenHeight
-            ? Text(
-                '$selectedValue',
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              )
-            : Text(
-                label,
-                style: TextStyle(color: colorScheme.onPrimary, fontSize: 20),
-              ),
+        child:
+            //  Text(
+            //     '$selectedValue',
+            //     style: TextStyle(
+            //         color: Theme.of(context).colorScheme.onPrimary,
+            //         fontSize: 20,
+            //         fontWeight: FontWeight.bold),
+            //   ),
+            Text(
+          label,
+          style: TextStyle(color: colorScheme.onPrimary, fontSize: 20),
+        ),
       ),
     );
   }
